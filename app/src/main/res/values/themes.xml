@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base App Theme -->
+    <style name="Theme.JarvisAssistant" parent="Theme.JarvisAssistant.Light" />
+
+    <!-- 1. LIGHT THEME - LIQUID PEARL GLASS EDITION -->
+    <style name="Theme.JarvisAssistant.Light" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:statusBarColor">#EEF2F9</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">#EEF2F9</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="android:windowBackground">#EEF2F9</item>
+        <item name="colorPrimary">#2F6BFF</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSurface">#B8FFFFFF</item>
+        <item name="colorOnSurface">#0F172A</item>
+
+        <item name="themeBg">#EEF2F9</item>
+        <item name="themeSurface">#B8FFFFFF</item>
+        <item name="themeCardBg">#B8FFFFFF</item>
+        <item name="themeCardBorder">#CBD5E1</item>
+        <item name="themeCardGlassStart">#F0FFFFFF</item>
+        <item name="themeCardGlassEnd">#A6FFFFFF</item>
+        <item name="themeDockBg">#CCFFFFFF</item>
+        <item name="themeDockGlassStart">#FAFFFFFF</item>
+        <item name="themeDockGlassEnd">#B8FFFFFF</item>
+        <item name="themeDockBorder">#CBD5E1</item>
+        <item name="themeGlassSpecular">#FFFFFF</item>
+        <item name="themeChipBg">#66FFFFFF</item>
+        <item name="themeInputBg">#B8FFFFFF</item>
+        <item name="themeGlowBlob1">@drawable/bg_liquid_glow_light_1</item>
+        <item name="themeGlowBlob2">@drawable/bg_liquid_glow_light_2</item>
+        <item name="themeGlowBlob3">@drawable/bg_liquid_glow_light_3</item>
+
+        <item name="themeTextPrimary">#0F172A</item>
+        <item name="themeTextSecondary">#475569</item>
+        <item name="themeTextMuted">#64748B</item>
+        <item name="themeAccent1">#2F6BFF</item>
+        <item name="themeAccent2">#8B5CF6</item>
+        <item name="themeAccent3">#06B6D4</item>
+        <item name="themeAccent">#2F6BFF</item>
+        <item name="themeAccentLight">#E0E7FF</item>
+    </style>
+
+    <!-- 2. DARK THEME - LIQUID OBSIDIAN GLASS EDITION -->
+    <style name="Theme.JarvisAssistant.Dark" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">#070914</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#070914</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:windowBackground">#070914</item>
+        <item name="colorPrimary">#5B8CFF</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSurface">#33141B3D</item>
+        <item name="colorOnSurface">#F8FAFC</item>
+
+        <item name="themeBg">#070914</item>
+        <item name="themeSurface">#33141B3D</item>
+        <item name="themeCardBg">#33141B3D</item>
+        <item name="themeCardBorder">#4D5B8CFF</item>
+        <item name="themeCardGlassStart">#4D1B2654</item>
+        <item name="themeCardGlassEnd">#1A0F1733</item>
+        <item name="themeDockBg">#660F1535</item>
+        <item name="themeDockGlassStart">#80172048</item>
+        <item name="themeDockGlassEnd">#4D0B1028</item>
+        <item name="themeDockBorder">#665B8CFF</item>
+        <item name="themeGlassSpecular">#80A5FF</item>
+        <item name="themeChipBg">#331A244E</item>
+        <item name="themeInputBg">#33141B3D</item>
+        <item name="themeGlowBlob1">@drawable/bg_liquid_glow_dark_1</item>
+        <item name="themeGlowBlob2">@drawable/bg_liquid_glow_dark_2</item>
+        <item name="themeGlowBlob3">@drawable/bg_liquid_glow_dark_3</item>
+
+        <item name="themeTextPrimary">#F8FAFC</item>
+        <item name="themeTextSecondary">#94A3B8</item>
+        <item name="themeTextMuted">#64748B</item>
+        <item name="themeAccent1">#5B8CFF</item>
+        <item name="themeAccent2">#A78BFA</item>
+        <item name="themeAccent3">#22D3EE</item>
+        <item name="themeAccent">#5B8CFF</item>
+        <item name="themeAccentLight">#1E2858</item>
+    </style>
+
+    <!-- 3. RED THEME - LIQUID RUBY GLASS EDITION -->
+    <style name="Theme.JarvisAssistant.Red" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">#0E0307</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#0E0307</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:windowBackground">#0E0307</item>
+        <item name="colorPrimary">#FF4D5E</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSurface">#332D0A13</item>
+        <item name="colorOnSurface">#FFF1F2</item>
+
+        <item name="themeBg">#0E0307</item>
+        <item name="themeSurface">#332D0A13</item>
+        <item name="themeCardBg">#332D0A13</item>
+        <item name="themeCardBorder">#59FF4D5E</item>
+        <item name="themeCardGlassStart">#4D3A0F1A</item>
+        <item name="themeCardGlassEnd">#1A1A050D</item>
+        <item name="themeDockBg">#6624060E</item>
+        <item name="themeDockGlassStart">#80300A14</item>
+        <item name="themeDockGlassEnd">#4D170409</item>
+        <item name="themeDockBorder">#66FF4D5E</item>
+        <item name="themeGlassSpecular">#FFA6B0</item>
+        <item name="themeChipBg">#33380D17</item>
+        <item name="themeInputBg">#332D0A13</item>
+        <item name="themeGlowBlob1">@drawable/bg_liquid_glow_red_1</item>
+        <item name="themeGlowBlob2">@drawable/bg_liquid_glow_red_2</item>
+        <item name="themeGlowBlob3">@drawable/bg_liquid_glow_red_3</item>
+
+        <item name="themeTextPrimary">#FFF1F2</item>
+        <item name="themeTextSecondary">#FDA4AF</item>
+        <item name="themeTextMuted">#BE727E</item>
+        <item name="themeAccent1">#FF4D5E</item>
+        <item name="themeAccent2">#FB7185</item>
+        <item name="themeAccent3">#F97316</item>
+        <item name="themeAccent">#FF4D5E</item>
+        <item name="themeAccentLight">#3A0C16</item>
+    </style>
+
+    <!-- 4. SUNSET THEME - LIQUID SUNSET GLASS EDITION -->
+    <style name="Theme.JarvisAssistant.Sunset" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:statusBarColor">#FFF0EA</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">#FFF0EA</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="android:windowBackground">#FFF0EA</item>
+        <item name="colorPrimary">#FF6A3D</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSurface">#CCFFF2EC</item>
+        <item name="colorOnSurface">#2E1020</item>
+
+        <item name="themeBg">#FFF0EA</item>
+        <item name="themeSurface">#CCFFF2EC</item>
+        <item name="themeCardBg">#CCFFF2EC</item>
+        <item name="themeCardBorder">#402E1020</item>
+        <item name="themeCardGlassStart">#F5FFFFFF</item>
+        <item name="themeCardGlassEnd">#B3FFE2D7</item>
+        <item name="themeDockBg">#E6FFF0EB</item>
+        <item name="themeDockGlassStart">#FAFFFFFF</item>
+        <item name="themeDockGlassEnd">#CCFFE8DF</item>
+        <item name="themeDockBorder">#402E1020</item>
+        <item name="themeGlassSpecular">#FFFFFF</item>
+        <item name="themeChipBg">#80FFFFFF</item>
+        <item name="themeInputBg">#CCFFF2EC</item>
+        <item name="themeGlowBlob1">@drawable/bg_liquid_glow_sunset_1</item>
+        <item name="themeGlowBlob2">@drawable/bg_liquid_glow_sunset_2</item>
+        <item name="themeGlowBlob3">@drawable/bg_liquid_glow_sunset_3</item>
+
+        <item name="themeTextPrimary">#2E1020</item>
+        <item name="themeTextSecondary">#783A5B</item>
+        <item name="themeTextMuted">#9C6282</item>
+        <item name="themeAccent1">#FF6A3D</item>
+        <item name="themeAccent2">#F43F5E</item>
+        <item name="themeAccent3">#8B5CF6</item>
+        <item name="themeAccent">#FF6A3D</item>
+        <item name="themeAccentLight">#FFE6DD</item>
+    </style>
+
+    <!-- 5. CUSTOM LIGHT - LIQUID GLASS -->
+    <style name="Theme.JarvisAssistant.CustomLight" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="colorPrimary">#2F6BFF</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSurface">#B8FFFFFF</item>
+        <item name="colorOnSurface">#0F172A</item>
+
+        <item name="themeBg">@android:color/transparent</item>
+        <item name="themeSurface">#B8FFFFFF</item>
+        <item name="themeCardBg">#B8FFFFFF</item>
+        <item name="themeCardBorder">#CBD5E1</item>
+        <item name="themeCardGlassStart">#F0FFFFFF</item>
+        <item name="themeCardGlassEnd">#A6FFFFFF</item>
+        <item name="themeDockBg">#CCFFFFFF</item>
+        <item name="themeDockGlassStart">#FAFFFFFF</item>
+        <item name="themeDockGlassEnd">#B8FFFFFF</item>
+        <item name="themeDockBorder">#CBD5E1</item>
+        <item name="themeGlassSpecular">#FFFFFF</item>
+        <item name="themeChipBg">#66FFFFFF</item>
+        <item name="themeInputBg">#B8FFFFFF</item>
+        <item name="themeGlowBlob1">@drawable/bg_liquid_glow_light_1</item>
+        <item name="themeGlowBlob2">@drawable/bg_liquid_glow_light_2</item>
+        <item name="themeGlowBlob3">@drawable/bg_liquid_glow_light_3</item>
+
+        <item name="themeTextPrimary">#0F172A</item>
+        <item name="themeTextSecondary">#475569</item>
+        <item name="themeTextMuted">#64748B</item>
+        <item name="themeAccent1">#2F6BFF</item>
+        <item name="themeAccent2">#8B5CF6</item>
+        <item name="themeAccent3">#06B6D4</item>
+        <item name="themeAccent">#2F6BFF</item>
+        <item name="themeAccentLight">#E0E7FF</item>
+    </style>
+
+    <!-- 6. CUSTOM DARK - LIQUID GLASS -->
+    <style name="Theme.JarvisAssistant.CustomDark" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="colorPrimary">#5B8CFF</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSurface">#33141B3D</item>
+        <item name="colorOnSurface">#F8FAFC</item>
+
+        <item name="themeBg">@android:color/transparent</item>
+        <item name="themeSurface">#33141B3D</item>
+        <item name="themeCardBg">#33141B3D</item>
+        <item name="themeCardBorder">#4D5B8CFF</item>
+        <item name="themeCardGlassStart">#4D1B2654</item>
+        <item name="themeCardGlassEnd">#1A0F1733</item>
+        <item name="themeDockBg">#660F1535</item>
+        <item name="themeDockGlassStart">#80172048</item>
+        <item name="themeDockGlassEnd">#4D0B1028</item>
+        <item name="themeDockBorder">#665B8CFF</item>
+        <item name="themeGlassSpecular">#80A5FF</item>
+        <item name="themeChipBg">#331A244E</item>
+        <item name="themeInputBg">#33141B3D</item>
+        <item name="themeGlowBlob1">@drawable/bg_liquid_glow_dark_1</item>
+        <item name="themeGlowBlob2">@drawable/bg_liquid_glow_dark_2</item>
+        <item name="themeGlowBlob3">@drawable/bg_liquid_glow_dark_3</item>
+
+        <item name="themeTextPrimary">#F8FAFC</item>
+        <item name="themeTextSecondary">#94A3B8</item>
+        <item name="themeTextMuted">#64748B</item>
+        <item name="themeAccent1">#5B8CFF</item>
+        <item name="themeAccent2">#A78BFA</item>
+        <item name="themeAccent3">#22D3EE</item>
+        <item name="themeAccent">#5B8CFF</item>
+        <item name="themeAccentLight">#1E2858</item>
+    </style>
+
+    <!-- 5. STARK GOLD THEME - HUD GOLD PALETTE -->
+    <style name="Theme.JarvisAssistant.Gold" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">#0A0800</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#0A0800</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:windowBackground">#0A0800</item>
+        <item name="colorPrimary">#FFD700</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#33382D0A</item>
+        <item name="colorOnSurface">#FEF9C3</item>
+
+        <item name="themeBg">#0A0800</item>
+        <item name="themeSurface">#33382D0A</item>
+        <item name="themeCardBg">#33382D0A</item>
+        <item name="themeCardBorder">#59FFD700</item>
+        <item name="themeCardGlassStart">#4D42360D</item>
+        <item name="themeCardGlassEnd">#1A1A1405</item>
+        <item name="themeDockBg">#66261F06</item>
+        <item name="themeDockGlassStart">#80332808</item>
+        <item name="themeDockGlassEnd">#4D1A1405</item>
+        <item name="themeDockBorder">#66FFD700</item>
+        <item name="themeGlassSpecular">#FFFBEB</item>
+        <item name="themeChipBg">#3342360D</item>
+        <item name="themeInputBg">#33382D0A</item>
+        <item name="themeGlowBlob1">@drawable/bg_liquid_glow_dark_1</item>
+        <item name="themeGlowBlob2">@drawable/bg_liquid_glow_dark_2</item>
+        <item name="themeGlowBlob3">@drawable/bg_liquid_glow_dark_3</item>
+
+        <item name="themeTextPrimary">#FEF9C3</item>
+        <item name="themeTextSecondary">#FDE047</item>
+        <item name="themeTextMuted">#CA8A04</item>
+        <item name="themeAccent1">#FFD700</item>
+        <item name="themeAccent2">#FBBF24</item>
+        <item name="themeAccent3">#F59E0B</item>
+        <item name="themeAccent">#FFD700</item>
+        <item name="themeAccentLight">#3A2E05</item>
+    </style>
+
+    <!-- 6. DEEP BLUE THEME - HUD DEEP BLUE PALETTE -->
+    <style name="Theme.JarvisAssistant.DeepBlue" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">#020617</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#020617</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:windowBackground">#020617</item>
+        <item name="colorPrimary">#38BDF8</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#330C4A6E</item>
+        <item name="colorOnSurface">#F0F9FF</item>
+
+        <item name="themeBg">#020617</item>
+        <item name="themeSurface">#330C4A6E</item>
+        <item name="themeCardBg">#330C4A6E</item>
+        <item name="themeCardBorder">#5938BDF8</item>
+        <item name="themeCardGlassStart">#4D075985</item>
+        <item name="themeCardGlassEnd">#1A032845</item>
+        <item name="themeDockBg">#66053459</item>
+        <item name="themeDockGlassStart">#80074273</item>
+        <item name="themeDockGlassEnd">#4D03213B</item>
+        <item name="themeDockBorder">#6638BDF8</item>
+        <item name="themeGlassSpecular">#E0F2FE</item>
+        <item name="themeChipBg">#33075985</item>
+        <item name="themeInputBg">#330C4A6E</item>
+        <item name="themeGlowBlob1">@drawable/bg_liquid_glow_dark_1</item>
+        <item name="themeGlowBlob2">@drawable/bg_liquid_glow_dark_2</item>
+        <item name="themeGlowBlob3">@drawable/bg_liquid_glow_dark_3</item>
+
+        <item name="themeTextPrimary">#F0F9FF</item>
+        <item name="themeTextSecondary">#7DD3FC</item>
+        <item name="themeTextMuted">#38BDF8</item>
+        <item name="themeAccent1">#38BDF8</item>
+        <item name="themeAccent2">#0EA5E9</item>
+        <item name="themeAccent3">#0284C7</item>
+        <item name="themeAccent">#38BDF8</item>
+        <item name="themeAccentLight">#082F49</item>
+    </style>
+
+    <!-- 7. MIDNIGHT PURPLE THEME - HUD MIDNIGHT PURPLE PALETTE -->
+    <style name="Theme.JarvisAssistant.MidnightPurple" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">#0F071A</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#0F071A</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:windowBackground">#0F071A</item>
+        <item name="colorPrimary">#C084FC</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSurface">#333B0764</item>
+        <item name="colorOnSurface">#FAF5FF</item>
+
+        <item name="themeBg">#0F071A</item>
+        <item name="themeSurface">#333B0764</item>
+        <item name="themeCardBg">#333B0764</item>
+        <item name="themeCardBorder">#59C084FC</item>
+        <item name="themeCardGlassStart">#4D4C0A8A</item>
+        <item name="themeCardGlassEnd">#1A1F0238</item>
+        <item name="themeDockBg">#6629034E</item>
+        <item name="themeDockGlassStart">#803B0764</item>
+        <item name="themeDockGlassEnd">#4D1C0135</item>
+        <item name="themeDockBorder">#66C084FC</item>
+        <item name="themeGlassSpecular">#F3E8FF</item>
+        <item name="themeChipBg">#334C0A8A</item>
+        <item name="themeInputBg">#333B0764</item>
+        <item name="themeGlowBlob1">@drawable/bg_liquid_glow_dark_1</item>
+        <item name="themeGlowBlob2">@drawable/bg_liquid_glow_dark_2</item>
+        <item name="themeGlowBlob3">@drawable/bg_liquid_glow_dark_3</item>
+
+        <item name="themeTextPrimary">#FAF5FF</item>
+        <item name="themeTextSecondary">#D8B4FE</item>
+        <item name="themeTextMuted">#A855F7</item>
+        <item name="themeAccent1">#C084FC</item>
+        <item name="themeAccent2">#A855F7</item>
+        <item name="themeAccent3">#9333EA</item>
+        <item name="themeAccent">#C084FC</item>
+        <item name="themeAccentLight">#2E1065</item>
+    </style>
+
+    <!-- Legacy style aliases -->
+    <style name="Theme.JarvisAssistant.PearlWhite" parent="Theme.JarvisAssistant.Light" />
+    <style name="Theme.JarvisAssistant.MidnightOnyx" parent="Theme.JarvisAssistant.Dark" />
+    <style name="Theme.JarvisAssistant.CyberpunkNeon" parent="Theme.JarvisAssistant.Dark" />
+    <style name="Theme.JarvisAssistant.EmeraldObsidian" parent="Theme.JarvisAssistant.Dark" />
+    <style name="Theme.JarvisAssistant.RoseGold" parent="Theme.JarvisAssistant.Sunset" />
+</resources>

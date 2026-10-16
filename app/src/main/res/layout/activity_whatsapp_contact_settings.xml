@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#070914">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarWhatsAppContacts"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#0E1225"
+        app:title="WhatsApp &amp; Contact Voice Control"
+        app:titleTextColor="#F8FAFC"
+        app:navigationIcon="@drawable/ic_back" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Hero Banner Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#121836"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="WhatsApp &amp; Local Contact Voice Link"
+                        android:textColor="#F8FAFC"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="JARVIS automatically maps your saved WhatsApp and device contacts. Say voice commands in English, Bangla, or Hindi using the exact contact name (e.g. 'WhatsApp call Mom', 'মেসেজ পাঠাও রাহুল কে') to initiate instant calls or messages."
+                        android:textColor="#94A3B8"
+                        android:textSize="13sp"
+                        android:layout_marginTop="6dp"
+                        android:lineSpacingExtra="3dp" />
+
+                    <!-- Quick Voice Command Test Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_jarvis_card"
+                        android:padding="10dp"
+                        android:layout_marginTop="12dp">
+
+                        <EditText
+                            android:id="@+id/etVoiceCommandInput"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="e.g. WhatsApp call Mom, Call Dad..."
+                            android:textSize="13sp"
+                            android:textColor="#F8FAFC"
+                            android:textColorHint="#94A3B8"
+                            android:background="@android:color/transparent"
+                            android:inputType="text" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnTestVoiceCommand"
+                            style="@style/Widget.Material3.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Test"
+                            android:textSize="12sp"
+                            app:icon="@drawable/ic_mic_jarvis"
+                            app:iconSize="16dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingHorizontal="12dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Search Contacts Bar -->
+            <EditText
+                android:id="@+id/etSearchContact"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Search contacts by name or number..."
+                android:textColor="#F8FAFC"
+                android:textColorHint="#94A3B8"
+                android:textSize="14sp"
+                android:background="@drawable/bg_jarvis_card"
+                android:paddingHorizontal="16dp"
+                android:drawableStart="@drawable/ic_checklist_tasks"
+                android:drawablePadding="10dp"
+                android:inputType="text"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Action Filters -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterAll"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="All Contacts"
+                        android:checked="true"
+                        android:layout_marginEnd="8dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterWhatsApp"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="WhatsApp Ready"
+                        android:layout_marginEnd="8dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterFavorites"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Favorites / Mapped" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Contacts RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvWhatsAppContacts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Empty / Permission View -->
+            <TextView
+                android:id="@+id/tvContactsPermissionNotice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contacts permission is required to list and link WhatsApp numbers. Tap here to grant permission."
+                android:textColor="#00E5FF"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="24dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/themeBg">
+
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_jarvis_icon_square"
+            android:src="@drawable/ic_back"
+            app:tint="?attr/themeTextPrimary"
+            android:contentDescription="Back" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Voice Orb &amp; Animation"
+                android:textColor="?attr/themeTextPrimary"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3D Neural Orb Customization &amp; Live Preview"
+                android:textColor="?attr/themeTextMuted"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="40dp">
+
+            <!-- Live Preview Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_jarvis_card"
+                android:padding="18dp"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_sparkle"
+                        app:tint="?attr/themeAccent"
+                        android:contentDescription="Preview" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Live Orb Preview"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textStyle="bold"
+                        android:layout_marginStart="10dp" />
+                </LinearLayout>
+
+                <!-- Preview WebView Container -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_jarvis_icon_square"
+                    android:clipChildren="true">
+
+                    <WebView
+                        android:id="@+id/orbPreviewWebView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </FrameLayout>
+            </LinearLayout>
+
+
+
+            <!-- Section 1: Orb Visibility -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. ORB VISIBILITY"
+                android:textColor="?attr/themeAccent"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                android:letterSpacing="0.08"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_jarvis_card"
+                android:padding="16dp"
+                android:layout_marginBottom="20dp">
+
+                <RadioGroup
+                    android:id="@+id/rgVisibility"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/rbVisAlways"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Always show during active voice session"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="14sp"
+                        android:paddingBottom="8dp" />
+
+                    <RadioButton
+                        android:id="@+id/rbVisSpeakOrAi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Show when user speaks or AI responds (Recommended)"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="14sp"
+                        android:paddingBottom="8dp" />
+
+                    <RadioButton
+                        android:id="@+id/rbVisAiOnly"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Show only while AI speaks"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="14sp"
+                        android:paddingBottom="8dp" />
+
+                    <RadioButton
+                        android:id="@+id/rbVisDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Disable the orb completely"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="14sp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <!-- Section 2: Orb Appearance -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2. ORB APPEARANCE"
+                android:textColor="?attr/themeAccent"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                android:letterSpacing="0.08"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_jarvis_card"
+                android:padding="16dp"
+                android:layout_marginBottom="20dp">
+
+                <!-- Shape -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Orb Shape"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+                <Spinner
+                    android:id="@+id/spinnerShape"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Color Theme -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Color Theme"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+                <Spinner
+                    android:id="@+id/spinnerColorTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Animation Style -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Animation Style"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+                <Spinner
+                    android:id="@+id/spinnerAnimationStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Glow Intensity -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Glow Intensity"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+                <Spinner
+                    android:id="@+id/spinnerGlowIntensity"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Particle Density -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Particle Density"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+                <Spinner
+                    android:id="@+id/spinnerParticleDensity"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Orb Size -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Orb Size"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+                <Spinner
+                    android:id="@+id/spinnerOrbSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Background Style -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Background Style"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+                <Spinner
+                    android:id="@+id/spinnerBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp" />
+            </LinearLayout>
+
+            <!-- Section 3: Animation Behavior -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3. ANIMATION BEHAVIOR"
+                android:textColor="?attr/themeAccent"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                android:letterSpacing="0.08"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_jarvis_card"
+                android:padding="16dp"
+                android:layout_marginBottom="20dp">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchSpeechReactive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Speech-Reactive Animation"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="15sp"
+                    android:paddingBottom="14dp" />
+
+                <!-- Mic Amplitude Response -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Microphone Amplitude Response"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp" />
+                <Spinner
+                    android:id="@+id/spinnerMicResponse"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="14dp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchAiPulse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="AI Speaking Pulse Effect"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="15sp"
+                    android:paddingBottom="14dp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchThinkingAnim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Thinking State Animation"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="15sp"
+                    android:paddingBottom="14dp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchSmoothTransitions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Smooth Entrance / Exit Transitions"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="15sp"
+                    android:paddingBottom="14dp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchTouchRipple"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Touch Ripple &amp; Haptic Effect"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="15sp"
+                    android:paddingBottom="14dp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchReducedMotion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reduced Motion Mode (Accessibility)"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- Section 4: Save & Reset Controls -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_jarvis_card"
+                android:padding="16dp">
+
+                <Button
+                    android:id="@+id/btnSaveSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Save Settings"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="?attr/themeAccent"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="10dp" />
+
+                <Button
+                    android:id="@+id/btnResetDefault"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Reset to Default"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:backgroundTint="?attr/themeSurface"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="10dp" />
+
+                <Button
+                    android:id="@+id/btnRestoreLast"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Restore Last Settings"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:backgroundTint="?attr/themeSurface"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,116 @@
+{
+  "entities": {
+    "MembershipPlan": {
+      "title": "Membership Plan",
+      "description": "A purchasable membership plan.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Plan unique identifier" },
+        "name": { "type": "string" },
+        "durationMonths": { "type": "integer" },
+        "priceMinorUnits": { "type": "integer", "description": "Price in smallest currency unit (e.g. Paise for INR)" },
+        "currency": { "type": "string", "description": "ISO currency code (e.g. INR)" },
+        "description": { "type": "string" },
+        "active": { "type": "boolean" },
+        "lifetime": { "type": "boolean" },
+        "benefits": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["name", "durationMonths", "priceMinorUnits", "currency", "active"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "An order for a membership plan.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "planId": { "type": "string" },
+        "amountMinorUnits": { "type": "integer" },
+        "currency": { "type": "string" },
+        "paymentMethod": { "type": "string", "enum": ["UPI", "BINANCE"] },
+        "paymentStatus": { "type": "string", "enum": ["PENDING", "VERIFYING", "PAID", "CANCELLED"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "planId", "amountMinorUnits", "paymentMethod", "paymentStatus"]
+    },
+    "PaymentSubmission": {
+      "title": "Payment Submission",
+      "description": "User submitted proof of payment.",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string" },
+        "userId": { "type": "string" },
+        "transactionReference": { "type": "string" },
+        "receiptStoragePath": { "type": "string" },
+        "status": { "type": "string", "enum": ["PENDING", "APPROVED", "REJECTED"] },
+        "submittedAt": { "type": "string", "format": "date-time" },
+        "reviewedAt": { "type": "string", "format": "date-time" },
+        "reviewedBy": { "type": "string" },
+        "rejectionReason": { "type": "string" }
+      },
+      "required": ["orderId", "userId", "transactionReference", "status"]
+    },
+    "Membership": {
+      "title": "Membership",
+      "description": "A user's active membership.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "planId": { "type": "string" },
+        "status": { "type": "string", "enum": ["ACTIVE", "EXPIRED"] },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "expiresAt": { "type": "string", "format": "date-time" },
+        "lifetime": { "type": "boolean" },
+        "sourceOrderId": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "planId", "status", "startedAt"]
+    },
+    "AdminSettings": {
+      "title": "Admin Settings",
+      "description": "Global settings managed by admins.",
+      "type": "object",
+      "properties": {
+        "merchantUpiId": { "type": "string" },
+        "merchantName": { "type": "string" },
+        "binancePayEnabled": { "type": "boolean" },
+        "binanceMerchantDetails": { "type": "string" }
+      }
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "A user with admin privileges.",
+      "type": "object",
+      "properties": {
+        "role": { "type": "string", "enum": ["admin", "super_admin"] }
+      },
+      "required": ["role"]
+    }
+  },
+  "firestore": {
+    "/plans/{planId}": {
+      "schema": "MembershipPlan",
+      "description": "Available membership plans."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Purchase orders created by users."
+    },
+    "/paymentSubmissions/{submissionId}": {
+      "schema": "PaymentSubmission",
+      "description": "User payment proofs for manual verification."
+    },
+    "/memberships/{userId}": {
+      "schema": "Membership",
+      "description": "Current membership status for each user."
+    },
+    "/adminSettings/{settingId}": {
+      "schema": "AdminSettings",
+      "description": "Global application configuration."
+    },
+    "/admins/{email}": {
+      "schema": "Admin",
+      "description": "List of authorized administrator emails."
+    }
+  }
+}

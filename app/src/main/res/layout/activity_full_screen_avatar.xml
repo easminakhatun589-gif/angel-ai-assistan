@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fullScreenAvatarRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/themeBg">
+
+    <!-- 3D Virtual Human Canvas -->
+    <WebView
+        android:id="@+id/avatarFullScreenWebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent" />
+
+    <!-- Top Floating Navigation -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="12dp">
+
+        <ImageButton
+            android:id="@+id/btnCloseFullScreen"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_jarvis_icon_square"
+            android:src="@drawable/ic_back"
+            app:tint="?attr/themeTextPrimary"
+            android:contentDescription="Close Full Screen" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ANGEL AI"
+                android:textColor="?attr/themeTextPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.06"
+                android:fontFamily="sans-serif-medium" />
+
+            <TextView
+                android:id="@+id/tvFullScreenStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3D VIRTUAL HUMAN • LIVE"
+                android:textColor="?attr/themeAccent"
+                android:textSize="10sp"
+                android:letterSpacing="0.08"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnOpenAvatarSettings"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_jarvis_icon_square"
+            android:src="@drawable/ic_nav_settings"
+            app:tint="?attr/themeTextPrimary"
+            android:contentDescription="Avatar Settings" />
+    </LinearLayout>
+
+    <!-- Bottom HUD Overlay -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:paddingBottom="24dp">
+
+        <!-- Live Subtitles & Captions Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardLiveCaptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="?attr/themeCardBg"
+            app:strokeColor="?attr/themeCardBorder"
+            app:strokeWidth="1dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:id="@+id/tvSpeakerLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ANGEL AI"
+                    android:textColor="?attr/themeAccent"
+                    android:textSize="10.5sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08" />
+
+                <TextView
+                    android:id="@+id/tvLiveCaptionText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="I am your 3D virtual assistant. Tap the microphone or speak anytime."
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="3dp"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Mic Button and Controls Row -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Screen Share Button -->
+            <ImageButton
+                android:id="@+id/btnFullScreenScreenShare"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_jarvis_icon_square"
+                android:src="@drawable/ic_code_chip"
+                app:tint="?attr/themeTextPrimary"
+                android:contentDescription="Screen Share"
+                android:layout_marginEnd="20dp" />
+
+            <!-- Big Glowing Microphone Button -->
+            <FrameLayout
+                android:id="@+id/btnFullScreenMic"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:background="@drawable/bg_jarvis_avatar"
+                android:backgroundTint="?attr/themeAccent"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/ivFullScreenMicIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_mic_jarvis"
+                    app:tint="#FFFFFF"
+                    android:contentDescription="Microphone" />
+            </FrameLayout>
+
+            <!-- Reset Camera Angle Button -->
+            <ImageButton
+                android:id="@+id/btnFullScreenResetAngle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_jarvis_icon_square"
+                android:src="@drawable/ic_verified_badge"
+                app:tint="?attr/themeTextPrimary"
+                android:contentDescription="Reset Camera"
+                android:layout_marginStart="20dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap mic to talk • Drag anywhere to rotate in 3D"
+            android:textColor="?attr/themeTextMuted"
+            android:textSize="11sp"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+</FrameLayout>

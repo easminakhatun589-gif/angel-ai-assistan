@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Angel AI Realistic 3D Avatar</title>
+<style>
+  :root {
+    --accent: #00d4ff;
+    --accent-glow: rgba(0, 212, 255, 0.4);
+    --bg-color: transparent;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    background-color: transparent;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  #canvas-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+  }
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+  }
+  /* Status pill overlay (optional, hidden by default, toggled via JS) */
+  #status-pill {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    padding: 6px 14px;
+    color: #f8fafc;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+    z-index: 10;
+  }
+  #status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #00d4ff;
+    box-shadow: 0 0 8px #00d4ff;
+  }
+  /* Error / Fallback Card */
+  #fallback-card {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, #1e293b 0%, #090d16 100%);
+    color: #f8fafc;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    text-align: center;
+    z-index: 20;
+  }
+  #fallback-card svg {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 0 16px #00d4ff);
+  }
+  #fallback-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+  #fallback-card p {
+    font-size: 12px;
+    color: #94a3b8;
+    max-width: 240px;
+    line-height: 1.4;
+  }
+  /* Loading Spinner */
+  #loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 15;
+  }
+  .spinner-ring {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 212, 255, 0.15);
+    border-top-color: #00d4ff;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin {
+    100% { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<div id="canvas-container">
+  <canvas id="avatarCanvas"></canvas>
+</div>
+
+<div id="loading-overlay">
+  <div class="spinner-ring"></div>
+</div>
+
+<div id="status-pill">
+  <div id="status-dot"></div>
+  <span id="status-text">ANGEL AI • READY</span>
+</div>
+
+<div id="fallback-card">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="5"/>
+    <path d="M20 21a8 8 0 0 0-16 0"/>
+    <path d="M12 13v2"/>
+  </svg>
+  <h3 id="fallback-title">ANGEL AI</h3>
+  <p id="fallback-desc">3D virtual assistant online and active.</p>
+</div>
+
+<script src="three.min.js"></script>
+<script>
+(function() {
+  "use strict";
+
+  // Elements
+  const canvas = document.getElementById("avatarCanvas");
+  const container = document.getElementById("canvas-container");
+  const loadingOverlay = document.getElementById("loading-overlay");
+  const fallbackCard = document.getElementById("fallback-card");
+  const statusPill = document.getElementById("status-pill");
+  const statusDot = document.getElementById("status-dot");
+  const statusText = document.getElementById("status-text");
+
+  // WebGL Availability Check
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance"
+    });
+  } catch (err) {
+    console.error("WebGL initialization failed:", err);
+    fallbackCard.style.display = "flex";
+    loadingOverlay.style.display = "none";
+    return;
+  }
+
+  renderer.setClearColor(0x000000, 0);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  // Scene & Camera
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+  camera.position.set(0, 0.15, 3.2);
+
+  // Configuration State
+  const config = {
+    model: "angel_human", // angel_human, angel_cyber, angel_nova, custom_image, custom_3d
+    gender: "female",
+    hairStyle: "sleek",   // sleek, ponytail, cyber_crop, wavy
+    hairColor: 0xd4af37,
+    eyeColor: 0x00d4ff,
+    skinTone: "fair",     // fair, olive, bronze, porcelain, deep
+    skinColor: 0xf5d0b5,
+    clothingStyle: "cyber_suit", // cyber_suit, formal_blazer, casual_hoodie, futuristic_tunic
+    clothingColor: 0x0f172a,
+    clothingAccent: 0x00d4ff,
+    environment: "cyber_studio", // cyber_studio, holographic_grid, sunset, nebula, minimal_dark, transparent
+    lighting: "studio",
+    vfxEnabled: true,
+    quality: "high",
+    animationsEnabled: true,
+    idleAnimEnabled: true,
+    lipSyncEnabled: true,
+    defaultExpression: "neutral"
+  };
+
+  // Expression and Conversation State
+  let currentState = "idle"; // idle, listening, thinking, speaking
+  let currentExpression = "neutral"; // neutral, happy, listening, thinking, speaking
+  let audioAmplitude = 0.0;
+  let audioBass = 0.0;
+  let audioHigh = 0.0;
+
+  // Skin tone color map
+  const SKIN_TONES = {
+    fair: 0xf5d0b5,
+    olive: 0xd1a179,
+    bronze: 0xa26c48,
+    porcelain: 0xfae7db,
+    deep: 0x6b4226
+  };
+
+  // Lighting Rig
+  const lightsGroup = new THREE.Group();
+  scene.add(lightsGroup);
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+  lightsGroup.add(ambientLight);
+
+  const keyLight = new THREE.DirectionalLight(0xfff8f0, 1.3);
+  keyLight.position.set(1.5, 2.5, 2.2);
+  keyLight.castShadow = true;
+  keyLight.shadow.mapSize.width = 1024;
+  keyLight.shadow.mapSize.height = 1024;
+  keyLight.shadow.camera.near = 0.5;
+  keyLight.shadow.camera.far = 10;
+  keyLight.shadow.bias = -0.001;
+  lightsGroup.add(keyLight);
+
+  const fillLight = new THREE.DirectionalLight(0x88ccff, 0.65);
+  fillLight.position.set(-2.0, 1.0, 1.5);
+  lightsGroup.add(fillLight);
+
+  const rimLight = new THREE.DirectionalLight(0x00d4ff, 1.4);
+  rimLight.position.set(0, 2.5, -2.5);
+  lightsGroup.add(rimLight);
+
+  // Background / Environment Group
+  const envGroup = new THREE.Group();
+  scene.add(envGroup);
+
+  let gridPlane = null;
+  let particleDust = null;
+  let backgroundMesh = null;
+
+  function buildEnvironment() {
+    // Clear old env elements
+    while (envGroup.children.length > 0) {
+      const child = envGroup.children[0];
+      if (child.geometry) child.geometry.dispose();
+      if (child.material) {
+        if (Array.isArray(child.material)) child.material.forEach(m => m.dispose());
+        else child.material.dispose();
+      }
+      envGroup.remove(child);
+    }
+
+    if (config.environment === "transparent") {
+      renderer.setClearColor(0x000000, 0);
+      return;
+    }
+
+    if (config.environment === "minimal_dark") {
+      renderer.setClearColor(0x080b11, 1);
+      return;
+    }
+
+    if (config.environment === "cyber_studio" || config.environment === "holographic_grid") {
+      renderer.setClearColor(0x070a13, 1);
+
+      // Holographic floor grid
+      const gridGeo = new THREE.PlaneGeometry(12, 12, 24, 24);
+      const gridMat = new THREE.MeshBasicMaterial({
+        color: 0x00d4ff,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.18
+      });
+      gridPlane = new THREE.Mesh(gridGeo, gridMat);
+      gridPlane.rotation.x = -Math.PI / 2;
+      gridPlane.position.y = -1.35;
+      envGroup.add(gridPlane);
+
+      // Subtle cyber ring on floor
+      const ringGeo = new THREE.RingGeometry(0.8, 1.4, 32);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0x38bdf8,
+        transparent: true,
+        opacity: 0.22,
+        side: THREE.DoubleSide
+      });
+      const floorRing = new THREE.Mesh(ringGeo, ringMat);
+      floorRing.rotation.x = -Math.PI / 2;
+      floorRing.position.y = -1.34;
+      envGroup.add(floorRing);
+    } else if (config.environment === "sunset") {
+      renderer.setClearColor(0x180b1e, 1);
+      keyLight.color.setHex(0xffaa55);
+      fillLight.color.setHex(0xe066a3);
+      rimLight.color.setHex(0xffdd66);
+    } else if (config.environment === "nebula") {
+      renderer.setClearColor(0x090514, 1);
+      keyLight.color.setHex(0x9d4edd);
+      fillLight.color.setHex(0x3a86ff);
+      rimLight.color.setHex(0x06d6a0);
+    }
+
+    // Atmospheric Floating Particle Dust (if VFX enabled)
+    if (config.vfxEnabled) {
+      const pCount = 180;
+      const pGeo = new THREE.BufferGeometry();
+      const pPos = new Float32Array(pCount * 3);
+      for (let i = 0; i < pCount * 3; i += 3) {
+        pPos[i] = (Math.random() - 0.5) * 6;
+        pPos[i + 1] = (Math.random() - 0.5) * 5 + 0.5;
+        pPos[i + 2] = (Math.random() - 0.5) * 4;
+      }
+      pGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
+      const pMat = new THREE.PointsMaterial({
+        color: 0x38bdf8,
+        size: 0.035,
+        transparent: true,
+        opacity: 0.45,
+        blending: THREE.AdditiveBlending
+      });
+      particleDust = new THREE.Points(pGeo, pMat);
+      envGroup.add(particleDust);
+    }
+  }
+
+  // ==========================================
+  // REALISTIC 3D VIRTUAL HUMAN AVATAR MESHES
+  // ==========================================
+  const avatarRoot = new THREE.Group();
+  scene.add(avatarRoot);
+
+  // References to animatable parts
+  let headBone = null;
+  let jawBone = null;
+  let upperLipMesh = null;
+  let lowerLipMesh = null;
+  let leftEyeGroup = null;
+  let rightEyeGroup = null;
+  let leftUpperLid = null;
+  let rightUpperLid = null;
+  let leftEyebrow = null;
+  let rightEyebrow = null;
+  let neckMesh = null;
+  let torsoMesh = null;
+  let hairGroup = null;
+  let customPortraitGroup = null;
+  let custom3DGroup = null;
+  let cyberDecalsGroup = null;
+
+  // Shared PBR Materials
+  let skinMaterial = null;
+  let hairMaterial = null;
+  let eyeIrisMaterial = null;
+  let clothingMaterial = null;
+  let clothingAccentMat = null;
+
+  function createRealisticHumanAvatar() {
+    // Clear root
+    while (avatarRoot.children.length > 0) {
+      const c = avatarRoot.children[0];
+      if (c.geometry) c.geometry.dispose();
+      avatarRoot.remove(c);
+    }
+
+    // 1. Torso & Upper Chest
+    const torsoGroup = new THREE.Group();
+    avatarRoot.add(torsoGroup);
+
+    clothingMaterial = new THREE.MeshStandardMaterial({
+      color: config.clothingColor,
+      roughness: 0.45,
+      metalness: 0.35
+    });
+
+    clothingAccentMat = new THREE.MeshStandardMaterial({
+      color: config.clothingAccent,
+      emissive: config.clothingAccent,
+      emissiveIntensity: 0.65,
+      roughness: 0.2
+    });
+
+    // Shoulders & Chest bust
+    const chestGeo = new THREE.CylinderGeometry(0.55, 0.65, 0.9, 32);
+    chestGeo.scale(1.2, 0.9, 0.75);
+    torsoMesh = new THREE.Mesh(chestGeo, clothingMaterial);
+    torsoMesh.position.set(0, -0.9, 0);
+    torsoMesh.castShadow = true;
+    torsoMesh.receiveShadow = true;
+    torsoGroup.add(torsoMesh);
+
+    // Collar / Lapels
+    const collarGeo = new THREE.TorusGeometry(0.32, 0.06, 16, 32, Math.PI * 1.3);
+    const collarMesh = new THREE.Mesh(collarGeo, clothingAccentMat);
+    collarMesh.rotation.x = Math.PI / 2 + 0.2;
+    collarMesh.rotation.z = Math.PI * 0.35;
+    collarMesh.position.set(0, -0.42, 0.08);
+    torsoGroup.add(collarMesh);
+
+    // 2. Neck
+    skinMaterial = new THREE.MeshStandardMaterial({
+      color: config.skinColor,
+      roughness: 0.58,
+      metalness: 0.05
+    });
+
+    const neckGeo = new THREE.CylinderGeometry(0.18, 0.22, 0.45, 24);
+    neckMesh = new THREE.Mesh(neckGeo, skinMaterial);
+    neckMesh.position.set(0, -0.28, -0.02);
+    neckMesh.castShadow = true;
+    avatarRoot.add(neckMesh);
+
+    // 3. Head Bone Pivot (rotates whole face, tilts, looks)
+    headBone = new THREE.Group();
+    headBone.position.set(0, 0, 0);
+    avatarRoot.add(headBone);
+
+    // Cranium / Face structure
+    const headGeo = new THREE.SphereGeometry(0.48, 32, 32);
+    headGeo.scale(0.88, 1.15, 0.98);
+    const headMesh = new THREE.Mesh(headGeo, skinMaterial);
+    headMesh.castShadow = true;
+    headMesh.receiveShadow = true;
+    headBone.add(headMesh);
+
+    // Cheekbones and Chin Sculpt
+    const chinGeo = new THREE.SphereGeometry(0.2, 20, 20);
+    chinGeo.scale(0.8, 0.9, 1.1);
+    const chinMesh = new THREE.Mesh(chinGeo, skinMaterial);
+    chinMesh.position.set(0, -0.42, 0.26);
+    headBone.add(chinMesh);
+
+    // Nose
+    const noseGeo = new THREE.ConeGeometry(0.09, 0.32, 16);
+    noseGeo.scale(0.85, 1.0, 1.4);
+    const noseMesh = new THREE.Mesh(noseGeo, skinMaterial);
+    noseMesh.rotation.x = -Math.PI / 8;
+    noseMesh.position.set(0, -0.06, 0.47);
+    headBone.add(noseMesh);
+
+    // Nostrils curve
+    const noseTipGeo = new THREE.SphereGeometry(0.065, 16, 16);
+    noseTipGeo.scale(1.3, 0.8, 1.0);
+    const noseTip = new THREE.Mesh(noseTipGeo, skinMaterial);
+    noseTip.position.set(0, -0.16, 0.48);
+    headBone.add(noseTip);
+
+    // Ears
+    const earGeo = new THREE.SphereGeometry(0.12, 16, 16);
+    earGeo.scale(0.35, 1.2, 0.7);
+    const leftEar = new THREE.Mesh(earGeo, skinMaterial);
+    leftEar.position.set(-0.43, 0.02, -0.05);
+    leftEar.rotation.y = -Math.PI / 6;
+    headBone.add(leftEar);
+
+    const rightEar = leftEar.clone();
+    rightEar.position.set(0.43, 0.02, -0.05);
+    rightEar.rotation.y = Math.PI / 6;
+    headBone.add(rightEar);
+
+    // 4. Realistic Eyes
+    const scleraMat = new THREE.MeshStandardMaterial({
+      color: 0xfafafa,
+      roughness: 0.15,
+      metalness: 0.0
+    });
+
+    eyeIrisMaterial = new THREE.MeshStandardMaterial({
+      color: config.eyeColor,
+      roughness: 0.2,
+      emissive: config.eyeColor,
+      emissiveIntensity: 0.25
+    });
+
+    const pupilMat = new THREE.MeshBasicMaterial({ color: 0x050505 });
+    const eyelidMat = new THREE.MeshStandardMaterial({
+      color: config.skinColor,
+      roughness: 0.6
+    });
+
+    function buildEye(isLeft) {
+      const eyeGroup = new THREE.Group();
+      eyeGroup.position.set(isLeft ? -0.16 : 0.16, 0.08, 0.38);
+
+      // Eyeball
+      const eyeSphere = new THREE.Mesh(new THREE.SphereGeometry(0.095, 20, 20), scleraMat);
+      eyeGroup.add(eyeSphere);
+
+      // Iris disc
+      const iris = new THREE.Mesh(new THREE.CircleGeometry(0.046, 24), eyeIrisMaterial);
+      iris.position.set(0, 0, 0.092);
+      eyeGroup.add(iris);
+
+      // Pupil
+      const pupil = new THREE.Mesh(new THREE.CircleGeometry(0.022, 20), pupilMat);
+      pupil.position.set(0, 0, 0.093);
+      eyeGroup.add(pupil);
+
+      // Specular Cornea Highlight
+      const highlight = new THREE.Mesh(
+        new THREE.CircleGeometry(0.009, 12),
+        new THREE.MeshBasicMaterial({ color: 0xffffff })
+      );
+      highlight.position.set(0.015, 0.015, 0.094);
+      eyeGroup.add(highlight);
+
+      // Upper Eyelid for Blinking
+      const lidGeo = new THREE.SphereGeometry(0.103, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+      const upperLid = new THREE.Mesh(lidGeo, eyelidMat);
+      upperLid.rotation.x = -Math.PI / 2;
+      eyeGroup.add(upperLid);
+
+      return { eyeGroup, upperLid };
+    }
+
+    const leftEye = buildEye(true);
+    leftEyeGroup = leftEye.eyeGroup;
+    leftUpperLid = leftEye.upperLid;
+    headBone.add(leftEyeGroup);
+
+    const rightEye = buildEye(false);
+    rightEyeGroup = rightEye.eyeGroup;
+    rightUpperLid = rightEye.upperLid;
+    headBone.add(rightEyeGroup);
+
+    // Eyebrows
+    const browMat = new THREE.MeshStandardMaterial({
+      color: 0x221815,
+      roughness: 0.8
+    });
+    const browGeo = new THREE.BoxGeometry(0.15, 0.025, 0.04);
+
+    leftEyebrow = new THREE.Mesh(browGeo, browMat);
+    leftEyebrow.position.set(-0.16, 0.22, 0.44);
+    leftEyebrow.rotation.z = 0.08;
+    headBone.add(leftEyebrow);
+
+    rightEyebrow = new THREE.Mesh(browGeo, browMat);
+    rightEyebrow.position.set(0.16, 0.22, 0.44);
+    rightEyebrow.rotation.z = -0.08;
+    headBone.add(rightEyebrow);
+
+    // 5. Mouth & Jaw Pivot
+    jawBone = new THREE.Group();
+    jawBone.position.set(0, -0.22, 0.32);
+    headBone.add(jawBone);
+
+    const lipMat = new THREE.MeshStandardMaterial({
+      color: 0xd9777f,
+      roughness: 0.35,
+      metalness: 0.05
+    });
+
+    // Upper Lip (fixed to head)
+    const upperLipGeo = new THREE.TorusGeometry(0.1, 0.022, 12, 24, Math.PI);
+    upperLipGeo.scale(1.2, 0.6, 0.8);
+    upperLipMesh = new THREE.Mesh(upperLipGeo, lipMat);
+    upperLipMesh.position.set(0, -0.25, 0.44);
+    upperLipMesh.rotation.x = Math.PI * 0.95;
+    headBone.add(upperLipMesh);
+
+    // Lower Lip (attached to jawbone)
+    const lowerLipGeo = new THREE.TorusGeometry(0.09, 0.024, 12, 24, Math.PI);
+    lowerLipGeo.scale(1.15, 0.7, 0.8);
+    lowerLipMesh = new THREE.Mesh(lowerLipGeo, lipMat);
+    lowerLipMesh.position.set(0, -0.06, 0.12);
+    lowerLipMesh.rotation.x = -Math.PI * 0.05;
+    jawBone.add(lowerLipMesh);
+
+    // Teeth inside
+    const teethMat = new THREE.MeshStandardMaterial({ color: 0xf8f8f8, roughness: 0.2 });
+    const teethGeo = new THREE.BoxGeometry(0.14, 0.03, 0.05);
+    const upperTeeth = new THREE.Mesh(teethGeo, teethMat);
+    upperTeeth.position.set(0, -0.265, 0.41);
+    headBone.add(upperTeeth);
+
+    // 6. Hair
+    buildHair();
+
+    // 7. Cyber / Futuristic Decals (if Cyber / Nova model)
+    if (config.model === "angel_cyber" || config.model === "angel_nova") {
+      buildCyberAccents();
+    }
+  }
+
+  function buildHair() {
+    if (hairGroup) {
+      headBone.remove(hairGroup);
+      hairGroup = null;
+    }
+
+    hairGroup = new THREE.Group();
+    headBone.add(hairGroup);
+
+    hairMaterial = new THREE.MeshStandardMaterial({
+      color: config.hairColor,
+      roughness: 0.42,
+      metalness: 0.15
+    });
+
+    const style = config.hairStyle;
+
+    if (style === "sleek" || style === "wavy") {
+      // Main crown volume
+      const crownGeo = new THREE.SphereGeometry(0.51, 24, 24, 0, Math.PI * 2, 0, Math.PI * 0.65);
+      const crown = new THREE.Mesh(crownGeo, hairMaterial);
+      crown.position.set(0, 0.08, -0.04);
+      hairGroup.add(crown);
+
+      // Left cascading locks
+      const strandGeo = new THREE.CylinderGeometry(0.07, 0.04, 0.85, 12);
+      const leftStrand = new THREE.Mesh(strandGeo, hairMaterial);
+      leftStrand.position.set(-0.38, -0.22, 0.12);
+      leftStrand.rotation.z = 0.15;
+      leftStrand.rotation.x = -0.1;
+      hairGroup.add(leftStrand);
+
+      // Right cascading locks
+      const rightStrand = leftStrand.clone();
+      rightStrand.position.set(0.38, -0.22, 0.12);
+      rightStrand.rotation.z = -0.15;
+      hairGroup.add(rightStrand);
+
+      // Back drape
+      const backGeo = new THREE.CylinderGeometry(0.38, 0.44, 0.9, 16, 1, false, 0, Math.PI);
+      const backHair = new THREE.Mesh(backGeo, hairMaterial);
+      backHair.position.set(0, -0.3, -0.22);
+      backHair.rotation.y = Math.PI / 2;
+      hairGroup.add(backHair);
+
+      if (style === "wavy") {
+        leftStrand.scale.set(1.3, 1.0, 1.3);
+        rightStrand.scale.set(1.3, 1.0, 1.3);
+      }
+    } else if (style === "ponytail") {
+      // Swept back crown
+      const crownGeo = new THREE.SphereGeometry(0.50, 24, 24, 0, Math.PI * 2, 0, Math.PI * 0.65);
+      const crown = new THREE.Mesh(crownGeo, hairMaterial);
+      crown.position.set(0, 0.08, -0.04);
+      hairGroup.add(crown);
+
+      // Ponytail bun / tail
+      const tailGeo = new THREE.ConeGeometry(0.14, 0.75, 16);
+      const tail = new THREE.Mesh(tailGeo, hairMaterial);
+      tail.position.set(0, 0.15, -0.65);
+      tail.rotation.x = -Math.PI / 3;
+      hairGroup.add(tail);
+
+      // Tie ring
+      const tie = new THREE.Mesh(
+        new THREE.TorusGeometry(0.08, 0.02, 12, 24),
+        clothingAccentMat
+      );
+      tie.position.set(0, 0.22, -0.48);
+      tie.rotation.x = Math.PI / 3;
+      hairGroup.add(tie);
+    } else { // cyber_crop
+      const cropGeo = new THREE.SphereGeometry(0.51, 24, 24, 0, Math.PI * 2, 0, Math.PI * 0.52);
+      const crop = new THREE.Mesh(cropGeo, hairMaterial);
+      crop.position.set(0, 0.1, -0.02);
+      hairGroup.add(crop);
+
+      // Front fringe spikes
+      const fringe = new THREE.BoxGeometry(0.35, 0.12, 0.12);
+      const fringeMesh = new THREE.Mesh(fringe, hairMaterial);
+      fringeMesh.position.set(0, 0.35, 0.38);
+      fringeMesh.rotation.x = -Math.PI / 6;
+      hairGroup.add(fringeMesh);
+    }
+  }
+
+  function buildCyberAccents() {
+    cyberDecalsGroup = new THREE.Group();
+    headBone.add(cyberDecalsGroup);
+
+    // Glowing Temple Data Port
+    const portGeo = new THREE.CylinderGeometry(0.045, 0.045, 0.03, 16);
+    const portMat = new THREE.MeshBasicMaterial({ color: 0x00d4ff });
+    const templePort = new THREE.Mesh(portGeo, portMat);
+    templePort.position.set(-0.43, 0.18, 0.15);
+    templePort.rotation.z = Math.PI / 2;
+    cyberDecalsGroup.add(templePort);
+
+    // Holographic Neural Halo Ring
+    const haloGeo = new THREE.RingGeometry(0.65, 0.72, 32);
+    const haloMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.65
+    });
+    const halo = new THREE.Mesh(haloGeo, haloMat);
+    halo.position.set(0, 0.65, 0);
+    halo.rotation.x = Math.PI / 2;
+    cyberDecalsGroup.add(halo);
+  }
+
+  // ==========================================
+  // CUSTOM 2D PORTRAIT HOLOGRAPHIC 3D DISPLAY
+  // ==========================================
+  function showCustomImagePortrait(dataUri) {
+    // Hide standard 3D human head
+    if (headBone) headBone.visible = false;
+    if (torsoMesh) torsoMesh.visible = false;
+    if (neckMesh) neckMesh.visible = false;
+
+    if (!customPortraitGroup) {
+      customPortraitGroup = new THREE.Group();
+      avatarRoot.add(customPortraitGroup);
+    } else {
+      while (customPortraitGroup.children.length > 0) {
+        customPortraitGroup.remove(customPortraitGroup.children[0]);
+      }
+    }
+    customPortraitGroup.visible = true;
+
+    // Load texture
+    const loader = new THREE.TextureLoader();
+    loader.load(dataUri, function(texture) {
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+
+      // Holographic Portrait Card
+      const cardGeo = new THREE.PlaneGeometry(1.6, 2.0);
+      const cardMat = new THREE.MeshBasicMaterial({
+        map: texture,
+        side: THREE.DoubleSide
+      });
+      const cardMesh = new THREE.Mesh(cardGeo, cardMat);
+      cardMesh.position.set(0, 0.15, 0);
+      customPortraitGroup.add(cardMesh);
+
+      // Glowing Glass Bezel
+      const frameGeo = new THREE.BoxGeometry(1.72, 2.12, 0.04);
+      const frameMat = new THREE.MeshStandardMaterial({
+        color: 0x0f172a,
+        roughness: 0.2,
+        metalness: 0.8,
+        emissive: 0x00d4ff,
+        emissiveIntensity: 0.35
+      });
+      const frameMesh = new THREE.Mesh(frameGeo, frameMat);
+      frameMesh.position.set(0, 0.15, -0.03);
+      customPortraitGroup.add(frameMesh);
+
+      // Hologram ring
+      const ringGeo = new THREE.RingGeometry(1.1, 1.22, 32);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0x38bdf8,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.5
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.set(0, 0.15, -0.06);
+      customPortraitGroup.add(ring);
+    });
+  }
+
+  function restoreStandardAvatar() {
+    if (customPortraitGroup) customPortraitGroup.visible = false;
+    if (headBone) headBone.visible = true;
+    if (torsoMesh) torsoMesh.visible = true;
+    if (neckMesh) neckMesh.visible = true;
+  }
+
+  // ==========================================
+  // INTERACTION: TOUCH ORBIT & ZOOM
+  // ==========================================
+  let isDragging = false;
+  let previousTouch = { x: 0, y: 0 };
+  let targetRotation = { x: 0, y: 0 };
+  let currentRotation = { x: 0, y: 0 };
+  let targetZoom = 3.2;
+  let currentZoom = 3.2;
+  let initialPinchDistance = null;
+
+  canvas.addEventListener("pointerdown", function(e) {
+    isDragging = true;
+    previousTouch = { x: e.clientX, y: e.clientY };
+  });
+
+  window.addEventListener("pointermove", function(e) {
+    if (!isDragging) return;
+    const deltaX = e.clientX - previousTouch.x;
+    const deltaY = e.clientY - previousTouch.y;
+    previousTouch = { x: e.clientX, y: e.clientY };
+
+    // Orbit sensitivity
+    targetRotation.y += deltaX * 0.007;
+    targetRotation.x += deltaY * 0.005;
+
+    // Clamp vertical tilt
+    targetRotation.x = Math.max(-0.45, Math.min(0.45, targetRotation.x));
+    // Clamp horizontal yaw
+    targetRotation.y = Math.max(-1.3, Math.min(1.3, targetRotation.y));
+  });
+
+  window.addEventListener("pointerup", function() {
+    isDragging = false;
+    initialPinchDistance = null;
+  });
+
+  // Touch Pinch Zoom
+  canvas.addEventListener("touchmove", function(e) {
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (initialPinchDistance === null) {
+        initialPinchDistance = dist;
+      } else {
+        const factor = (dist - initialPinchDistance) * 0.005;
+        targetZoom = Math.max(1.8, Math.min(4.8, targetZoom - factor));
+        initialPinchDistance = dist;
+      }
+    }
+  }, { passive: true });
+
+  // Double tap to reset
+  let lastTap = 0;
+  canvas.addEventListener("pointerup", function() {
+    const now = Date.now();
+    if (now - lastTap < 300) {
+      targetRotation = { x: 0, y: 0 };
+      targetZoom = 3.2;
+    }
+    lastTap = now;
+  });
+
+  // ==========================================
+  // PROCEDURAL ANIMATION ENGINE
+  // ==========================================
+  let clock = new THREE.Clock();
+  let blinkTimer = 0;
+  let isBlinking = false;
+  let blinkProgress = 0;
+  let saccadeTimer = 0;
+  let targetGaze = { x: 0, y: 0 };
+  let currentGaze = { x: 0, y: 0 };
+
+  // Targets for smooth expression interpolation
+  let targetJaw = 0;
+  let currentJaw = 0;
+  let targetSmile = 0;
+  let currentSmile = 0;
+  let targetHeadPitch = 0;
+  let targetHeadRoll = 0;
+  let targetHeadYaw = 0;
+
+  function updateProceduralAnimations(delta, elapsed) {
+    if (!config.animationsEnabled) return;
+
+    // 1. Natural Human Breathing (subtle sinusoidal expansion and chin nod)
+    if (config.idleAnimEnabled) {
+      const breathSpeed = (currentState === "thinking") ? 1.8 : 1.2;
+      const breath = Math.sin(elapsed * breathSpeed);
+      if (torsoMesh) {
+        torsoMesh.scale.x = 1.2 + breath * 0.015;
+        torsoMesh.scale.z = 0.75 + breath * 0.02;
+      }
+      if (neckMesh) {
+        neckMesh.position.y = -0.28 + breath * 0.003;
+      }
+    }
+
+    // 2. Natural Blinking Cycle
+    if (config.idleAnimEnabled) {
+      blinkTimer += delta;
+      if (!isBlinking && blinkTimer > 2.8 + Math.sin(elapsed * 0.3) * 1.5) {
+        isBlinking = true;
+        blinkProgress = 0;
+        blinkTimer = 0;
+      }
+      if (isBlinking) {
+        blinkProgress += delta * 12.0; // blink duration ~160ms
+        const lidVal = Math.sin(Math.min(Math.PI, blinkProgress));
+        if (leftUpperLid && rightUpperLid) {
+          leftUpperLid.rotation.x = -Math.PI / 2 + lidVal * 1.15;
+          rightUpperLid.rotation.x = -Math.PI / 2 + lidVal * 1.15;
+        }
+        if (blinkProgress >= Math.PI) {
+          isBlinking = false;
+          if (leftUpperLid && rightUpperLid) {
+            leftUpperLid.rotation.x = -Math.PI / 2;
+            rightUpperLid.rotation.x = -Math.PI / 2;
+          }
+        }
+      }
+    }
+
+    // 3. Eye Gaze Saccades (natural subtle glances)
+    saccadeTimer += delta;
+    if (saccadeTimer > 3.2) {
+      saccadeTimer = 0;
+      if (currentState === "thinking") {
+        targetGaze.x = 0.08;
+        targetGaze.y = 0.12; // Looking upward in thought
+      } else if (currentState === "listening") {
+        targetGaze.x = (Math.random() - 0.5) * 0.04;
+        targetGaze.y = 0.01; // Focused attentive gaze
+      } else {
+        targetGaze.x = (Math.random() - 0.5) * 0.08;
+        targetGaze.y = (Math.random() - 0.5) * 0.06;
+      }
+    }
+    currentGaze.x += (targetGaze.x - currentGaze.x) * 0.1;
+    currentGaze.y += (targetGaze.y - currentGaze.y) * 0.1;
+    if (leftEyeGroup && rightEyeGroup) {
+      leftEyeGroup.rotation.y = currentGaze.x;
+      leftEyeGroup.rotation.x = currentGaze.y;
+      rightEyeGroup.rotation.y = currentGaze.x;
+      rightEyeGroup.rotation.x = currentGaze.y;
+    }
+
+    // 4. Expression & State Transitions
+    switch (currentState) {
+      case "listening":
+        targetHeadRoll = 0.07;  // Inquisitive head tilt
+        targetHeadPitch = -0.04;
+        targetSmile = 0.2;
+        targetJaw = 0;
+        break;
+      case "thinking":
+        targetHeadRoll = -0.06;
+        targetHeadPitch = 0.10; // Head tilted upward
+        targetSmile = 0.0;
+        targetJaw = 0;
+        break;
+      case "speaking":
+        targetHeadRoll = Math.sin(elapsed * 2.5) * 0.04;
+        targetHeadPitch = Math.sin(elapsed * 4.0) * 0.03;
+        targetSmile = 0.35;
+        // Real-time speech lip sync modulation
+        if (config.lipSyncEnabled) {
+          const speechPulse = Math.abs(Math.sin(elapsed * 9.5)) * 0.22;
+          const ampMod = Math.min(0.38, audioAmplitude * 0.65);
+          targetJaw = Math.max(speechPulse, ampMod);
+        } else {
+          targetJaw = 0.15;
+        }
+        break;
+      case "idle":
+      default:
+        targetHeadRoll = Math.sin(elapsed * 0.8) * 0.02;
+        targetHeadPitch = Math.sin(elapsed * 0.6) * 0.02;
+        targetSmile = (currentExpression === "happy") ? 0.8 : 0.15;
+        targetJaw = 0;
+        break;
+    }
+
+    // Interpolate expressions smoothly
+    currentJaw += (targetJaw - currentJaw) * 0.3;
+    currentSmile += (targetSmile - currentSmile) * 0.15;
+
+    // Apply jaw opening
+    if (jawBone) {
+      jawBone.rotation.x = currentJaw * 0.45;
+      jawBone.position.y = -0.22 - currentJaw * 0.08;
+    }
+    if (lowerLipMesh) {
+      lowerLipMesh.scale.x = 1.15 + currentJaw * 0.2;
+    }
+
+    // Apply smiling mouth corner lift
+    if (upperLipMesh) {
+      upperLipMesh.scale.x = 1.2 + currentSmile * 0.15;
+      upperLipMesh.position.y = -0.25 + currentSmile * 0.015;
+    }
+
+    // Apply Eyebrow Expressions
+    if (leftEyebrow && rightEyebrow) {
+      const browLift = (currentState === "listening") ? 0.03 : ((currentState === "thinking") ? -0.02 : 0);
+      leftEyebrow.position.y = 0.22 + browLift;
+      rightEyebrow.position.y = 0.22 + browLift;
+    }
+
+    // Apply Head Pose
+    if (headBone) {
+      headBone.rotation.z = targetHeadRoll;
+      headBone.rotation.x = targetHeadPitch;
+    }
+
+    // Rotate Floor Grid & Dust
+    if (gridPlane && config.environment === "cyber_studio") {
+      gridPlane.rotation.z = elapsed * 0.02;
+    }
+    if (particleDust) {
+      particleDust.rotation.y = elapsed * 0.015;
+    }
+
+    // Custom 2D Portrait subtle sway
+    if (customPortraitGroup && customPortraitGroup.visible) {
+      customPortraitGroup.rotation.y = Math.sin(elapsed * 0.7) * 0.08;
+      customPortraitGroup.position.y = Math.sin(elapsed * 1.4) * 0.04;
+    }
+  }
+
+  // ==========================================
+  // RENDER LOOP & RESIZING
+  // ==========================================
+  function onResize() {
+    const width = container.clientWidth || window.innerWidth;
+    const height = container.clientHeight || window.innerHeight;
+    if (width === 0 || height === 0) return;
+
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+
+    const dpr = (config.quality === "high") ? Math.min(window.devicePixelRatio || 1, 2.0)
+              : (config.quality === "medium") ? 1.25 : 1.0;
+    renderer.setPixelRatio(dpr);
+    renderer.setSize(width, height);
+  }
+
+  window.addEventListener("resize", onResize);
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    const delta = clock.getDelta();
+    const elapsed = clock.getElapsedTime();
+
+    // Smooth Orbit & Zoom damping
+    currentRotation.x += (targetRotation.x - currentRotation.x) * 0.1;
+    currentRotation.y += (targetRotation.y - currentRotation.y) * 0.1;
+    currentZoom += (targetZoom - currentZoom) * 0.1;
+
+    avatarRoot.rotation.y = currentRotation.y;
+    avatarRoot.rotation.x = currentRotation.x;
+    camera.position.z = currentZoom;
+
+    updateProceduralAnimations(delta, elapsed);
+
+    renderer.render(scene, camera);
+  }
+
+  // Initial Build
+  buildEnvironment();
+  createRealisticHumanAvatar();
+  onResize();
+  animate();
+
+  // Hide loading spinner
+  setTimeout(() => {
+    loadingOverlay.style.opacity = "0";
+    setTimeout(() => { loadingOverlay.style.display = "none"; }, 400);
+  }, 350);
+
+  // ==========================================
+  // PUBLIC JAVASCRIPT API (window.AngelAvatar)
+  // ==========================================
+  window.AngelAvatar = {
+    setState: function(state) {
+      currentState = state.toLowerCase();
+      statusText.textContent = "ANGEL AI • " + currentState.toUpperCase();
+      switch (currentState) {
+        case "listening":
+          statusDot.style.background = "#00d4ff";
+          statusDot.style.boxShadow = "0 0 10px #00d4ff";
+          break;
+        case "speaking":
+          statusDot.style.background = "#10b981";
+          statusDot.style.boxShadow = "0 0 10px #10b981";
+          break;
+        case "thinking":
+          statusDot.style.background = "#8b5cf6";
+          statusDot.style.boxShadow = "0 0 10px #8b5cf6";
+          break;
+        default:
+          statusDot.style.background = "#38bdf8";
+          statusDot.style.boxShadow = "0 0 6px #38bdf8";
+      }
+    },
+
+    setExpression: function(expr) {
+      currentExpression = expr.toLowerCase();
+    },
+
+    setAudioLevel: function(amp, bass, high) {
+      audioAmplitude = amp || 0;
+      audioBass = bass || 0;
+      audioHigh = high || 0;
+    },
+
+    setAppearance: function(newCfg) {
+      if (typeof newCfg === "string") {
+        try { newCfg = JSON.parse(newCfg); } catch(e) {}
+      }
+      Object.assign(config, newCfg);
+
+      // Re-apply skin tone
+      if (SKIN_TONES[config.skinTone]) {
+        config.skinColor = SKIN_TONES[config.skinTone];
+      }
+      if (skinMaterial) skinMaterial.color.setHex(config.skinColor);
+
+      // Re-apply hair
+      if (hairMaterial) hairMaterial.color.setHex(config.hairColor);
+      buildHair();
+
+      // Re-apply eyes
+      if (eyeIrisMaterial) {
+        eyeIrisMaterial.color.setHex(config.eyeColor);
+        eyeIrisMaterial.emissive.setHex(config.eyeColor);
+      }
+
+      // Re-apply clothing
+      if (clothingMaterial) clothingMaterial.color.setHex(config.clothingColor);
+      if (clothingAccentMat) {
+        clothingAccentMat.color.setHex(config.clothingAccent);
+        clothingAccentMat.emissive.setHex(config.clothingAccent);
+      }
+
+      // Environment & Quality
+      buildEnvironment();
+      onResize();
+    },
+
+    setQuality: function(q) {
+      config.quality = q;
+      if (q === "low") {
+        renderer.shadowMap.enabled = false;
+        config.vfxEnabled = false;
+      } else {
+        renderer.shadowMap.enabled = true;
+      }
+      buildEnvironment();
+      onResize();
+    },
+
+    loadCustomImage: function(dataUri) {
+      config.model = "custom_image";
+      showCustomImagePortrait(dataUri);
+    },
+
+    restoreDefaultModel: function() {
+      config.model = "angel_human";
+      restoreStandardAvatar();
+    },
+
+    resetCamera: function() {
+      targetRotation = { x: 0, y: 0 };
+      targetZoom = 3.2;
+    },
+
+    playAnimation: function(animName) {
+      currentAnimation = animName;
+      if (animName === "dance") {
+        setExpression("happy");
+        setState("speaking");
+      } else if (animName === "combat") {
+        setExpression("neutral");
+        setState("listening");
+      } else if (animName === "orbit") {
+        setExpression("happy");
+      } else if (animName === "victory") {
+        setExpression("happy");
+        setState("speaking");
+      } else if (animName === "bow") {
+        setExpression("neutral");
+      } else if (animName === "quantum") {
+        setExpression("thinking");
+        setState("thinking");
+      }
+    },
+
+    showStatusPill: function(show) {
+      statusPill.style.display = show ? "flex" : "none";
+    },
+
+    isReady: function() {
+      return true;
+    }
+  };
+
+  // Notify Android host if bridge available
+  if (window.AvatarBridge && window.AvatarBridge.onAvatarReady) {
+    window.AvatarBridge.onAvatarReady();
+  }
+})();
+</script>
+</body>
+</html>

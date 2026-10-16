@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/themeBg"
+    android:padding="20dp">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/layoutHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_jarvis_icon_square"
+            android:src="@drawable/ic_back"
+            app:tint="?attr/themeTextPrimary"
+            android:contentDescription="Back" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AI Call Assistant"
+                android:textColor="?attr/themeTextPrimary"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bengali &amp; English Smart Call Screening"
+                android:textColor="?attr/themeTextMuted"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/viewStatusDot"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:background="@drawable/bg_jarvis_mic_center"
+            android:backgroundTint="@color/status_green" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/layoutHeader"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="40dp">
+
+            <!-- Status & Emergency Stop Banner -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_jarvis_action_card"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tvEngineState"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="STATE: IDLE"
+                    android:textColor="#00D4FF"
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvEngineStatusMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Call Assistant is ready for incoming SIM and WhatsApp calls."
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="13sp"
+                    android:layout_marginTop="6dp" />
+
+                <TextView
+                    android:id="@+id/tvLastTranscript"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Last Transcript: None"
+                    android:textColor="?attr/themeTextMuted"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
+
+                    <Button
+                        android:id="@+id/btnTestSimCall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="4dp"
+                        android:text="Test SIM Call"
+                        android:textSize="11sp"
+                        android:backgroundTint="?attr/themeAccent"
+                        android:textColor="#FFFFFF" />
+
+                    <Button
+                        android:id="@+id/btnTestWhatsappCall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="Test WhatsApp"
+                        android:textSize="11sp"
+                        android:backgroundTint="#22C55E"
+                        android:textColor="#FFFFFF" />
+
+                    <Button
+                        android:id="@+id/btnEmergencyStop"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="4dp"
+                        android:text="Stop"
+                        android:textSize="11sp"
+                        android:backgroundTint="#EF4444"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Main Enable Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_jarvis_action_card"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchCallAssistant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enable AI Call Assistant"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/themeCardBorder"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchWhatsappCall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="WhatsApp Call Assistance"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Note: Personal WhatsApp calls have strict Android/Meta audio recording restrictions. Verified business API or manual companion mode applies."
+                    android:textColor="?attr/themeTextMuted"
+                    android:textSize="10sp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="10dp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchSimCall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SIM &amp; Cellular Call Assistance"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Language & Voice Configuration -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_jarvis_action_card"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Language &amp; Voice Settings"
+                    android:textColor="?attr/themeAccent"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Primary Call Language"
+                    android:textColor="?attr/themeTextMuted"
+                    android:textSize="12sp"
+                    android:layout_marginTop="12dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerLanguage"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:backgroundTint="?attr/themeAccent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AI Voice Model"
+                    android:textColor="?attr/themeTextMuted"
+                    android:textSize="12sp"
+                    android:layout_marginTop="10dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerVoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:backgroundTint="?attr/themeAccent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Custom Greeting Statement"
+                    android:textColor="?attr/themeTextMuted"
+                    android:textSize="12sp"
+                    android:layout_marginTop="10dp" />
+
+                <EditText
+                    android:id="@+id/etCustomGreeting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:minLines="2"
+                    android:textSize="13sp"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:background="@drawable/bg_jarvis_action_card"
+                    android:padding="10dp"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Custom Conversation Instructions"
+                    android:textColor="?attr/themeTextMuted"
+                    android:textSize="12sp"
+                    android:layout_marginTop="10dp" />
+
+                <EditText
+                    android:id="@+id/etInstructions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:minLines="2"
+                    android:textSize="13sp"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:background="@drawable/bg_jarvis_action_card"
+                    android:padding="10dp"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Rules & Security Settings -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_jarvis_action_card"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rules &amp; Filtering"
+                    android:textColor="?attr/themeAccent"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchAutoAnswer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Auto-Answer Calls (Where Supported)"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:layout_marginTop="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contact Allowlist (Comma-separated numbers or names)"
+                    android:textColor="?attr/themeTextMuted"
+                    android:textSize="12sp"
+                    android:layout_marginTop="12dp" />
+
+                <EditText
+                    android:id="@+id/etAllowlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="13sp"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:background="@drawable/bg_jarvis_action_card"
+                    android:padding="10dp"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Blocked Contacts (Comma-separated)"
+                    android:textColor="?attr/themeTextMuted"
+                    android:textSize="12sp"
+                    android:layout_marginTop="10dp" />
+
+                <EditText
+                    android:id="@+id/etBlocked"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="13sp"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:background="@drawable/bg_jarvis_action_card"
+                    android:padding="10dp"
+                    android:layout_marginTop="4dp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchPrivacyOptIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Conversation History &amp; Transcript Opt-In"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+
+            <!-- Feature Classification Summary -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_jarvis_action_card"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Feature Classification Summary"
+                    android:textColor="?attr/themeTextPrimary"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• IMPLEMENTED AND TESTED: Settings Dashboard, State Machine Engine, Bengali &amp; English Speech Synthesizer, Emergency Stop, Allowlist Filtering.\n• IMPLEMENTED BUT NOT DEVICE-VERIFIED: Telecom State Listener &amp; Call Screening.\n• BLOCKED BY PLATFORM/API LIMITATIONS: Personal WhatsApp Call Audio Interception (Meta sandbox policy)."
+                    android:textColor="?attr/themeTextMuted"
+                    android:textSize="11sp"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

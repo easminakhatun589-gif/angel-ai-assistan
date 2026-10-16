@@ -1,0 +1,6 @@
+{
+  "name": "ANGEL AI",
+  "description": "A personal AI voice assistant developed and owned by MD ASLAM.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

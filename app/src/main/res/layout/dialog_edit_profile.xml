@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Operator Name"
+        android:textColor="?attr/themeTextSecondary"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etDialogName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your name"
+        android:textColor="?attr/themeTextPrimary"
+        android:textColorHint="?attr/themeTextMuted"
+        android:textSize="15sp"
+        android:inputType="textPersonName"
+        android:background="@drawable/bg_jarvis_card"
+        android:padding="12dp"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email Address"
+        android:textColor="?attr/themeTextSecondary"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etDialogEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your email"
+        android:textColor="?attr/themeTextPrimary"
+        android:textColorHint="?attr/themeTextMuted"
+        android:textSize="15sp"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/bg_jarvis_card"
+        android:padding="12dp"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone Number"
+        android:textColor="?attr/themeTextSecondary"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etDialogPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter phone number"
+        android:textColor="?attr/themeTextPrimary"
+        android:textColorHint="?attr/themeTextMuted"
+        android:textSize="15sp"
+        android:inputType="phone"
+        android:background="@drawable/bg_jarvis_card"
+        android:padding="12dp"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Country"
+        android:textColor="?attr/themeTextSecondary"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etDialogCountry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter country name (e.g. India)"
+        android:textColor="?attr/themeTextPrimary"
+        android:textColorHint="?attr/themeTextMuted"
+        android:textSize="15sp"
+        android:inputType="text"
+        android:background="@drawable/bg_jarvis_card"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDialogUploadPhoto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Upload Photo"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_marginEnd="6dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDialogDetectLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Detect Location"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_marginStart="6dp" />
+    </LinearLayout>
+
+</LinearLayout>

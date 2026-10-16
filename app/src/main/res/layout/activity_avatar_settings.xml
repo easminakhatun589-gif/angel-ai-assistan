@@ -1,0 +1,1278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/avatarSettingsRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/themeBg">
+
+    <!-- Top Action Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="12dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_jarvis_icon_square"
+            android:src="@drawable/ic_back"
+            app:tint="?attr/themeTextPrimary"
+            android:contentDescription="Back" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Avatar Settings"
+                android:textColor="?attr/themeTextPrimary"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Realistic 3D Virtual Human &amp; Custom Appearance"
+                android:textColor="?attr/themeTextMuted"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnFullScreenPreview"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_jarvis_icon_square"
+            android:src="@drawable/ic_arrow_right"
+            app:tint="?attr/themeAccent"
+            android:contentDescription="Full Screen Avatar" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="40dp">
+
+            <!-- 1. LIVE 3D INTERACTIVE AVATAR PREVIEW CARD -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="18dp"
+                app:cardBackgroundColor="?attr/themeCardBg"
+                app:strokeColor="?attr/themeCardBorder"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- Interactive 3D Avatar WebView -->
+                    <WebView
+                        android:id="@+id/avatarPreviewWebView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent" />
+
+                    <!-- Top-Left Badge -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|start"
+                        android:layout_margin="12dp"
+                        android:background="@drawable/bg_jarvis_status_badge"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <View
+                            android:layout_width="7dp"
+                            android:layout_height="7dp"
+                            android:background="@drawable/bg_jarvis_mic_center"
+                            android:backgroundTint="?attr/themeAccent" />
+
+                        <TextView
+                            android:id="@+id/tvPreviewStateLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3D REALTIME • DRAG TO ROTATE"
+                            android:textColor="?attr/themeAccent"
+                            android:textSize="9.5sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.06"
+                            android:layout_marginStart="6dp" />
+                    </LinearLayout>
+
+                    <!-- Top-Right Reset Camera Button -->
+                    <ImageButton
+                        android:id="@+id/btnResetCamera"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="top|end"
+                        android:layout_margin="12dp"
+                        android:background="@drawable/bg_jarvis_icon_square"
+                        android:src="@drawable/ic_code_chip"
+                        app:tint="?attr/themeTextPrimary"
+                        android:contentDescription="Reset Camera" />
+
+                    <!-- Bottom Quick Expression Chips -->
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_margin="10dp"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnExprNeutral"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="Neutral"
+                                android:textSize="11sp"
+                                android:paddingHorizontal="12dp"
+                                android:layout_marginEnd="6dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnExprSmile"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="Smile"
+                                android:textSize="11sp"
+                                android:paddingHorizontal="12dp"
+                                android:layout_marginEnd="6dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnExprListening"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="Listening"
+                                android:textSize="11sp"
+                                android:paddingHorizontal="12dp"
+                                android:layout_marginEnd="6dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnExprThinking"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="Thinking"
+                                android:textSize="11sp"
+                                android:paddingHorizontal="12dp"
+                                android:layout_marginEnd="6dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnExprSpeaking"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="Speaking"
+                                android:textSize="11sp"
+                                android:paddingHorizontal="12dp" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECTION A: AVATAR APPEARANCE -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SECTION A: AVATAR APPEARANCE"
+                android:textColor="?attr/themeTextMuted"
+                android:textSize="11sp"
+                android:letterSpacing="0.08"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                app:cardBackgroundColor="?attr/themeCardBg"
+                app:strokeColor="?attr/themeCardBorder"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- 1. Choose Avatar Model -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select Avatar Base"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="14dp"
+                        android:scrollbars="none">
+
+                        <com.google.android.material.button.MaterialButtonToggleGroup
+                            android:id="@+id/toggleAvatarModel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:singleSelection="true">
+
+                            <Button
+                                android:id="@+id/btnModelHuman"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Angel Human"
+                                android:textSize="12sp" />
+
+                            <Button
+                                android:id="@+id/btnModelCyber"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Angel Cyber"
+                                android:textSize="12sp" />
+
+                            <Button
+                                android:id="@+id/btnModelNova"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Angel Nova"
+                                android:textSize="12sp" />
+
+                            <Button
+                                android:id="@+id/btnModelCustomImage"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Custom Portrait"
+                                android:textSize="12sp" />
+
+                            <Button
+                                android:id="@+id/btnModelImported3D"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Custom 3D (.glb)"
+                                android:textSize="12sp" />
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
+                    </HorizontalScrollView>
+
+                    <!-- 2. Hairstyle & Hair Color -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hairstyle &amp; Color"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="8dp"
+                        android:scrollbars="none">
+
+                        <com.google.android.material.button.MaterialButtonToggleGroup
+                            android:id="@+id/toggleHairStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:singleSelection="true">
+
+                            <Button
+                                android:id="@+id/btnHairSleek"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sleek Flow"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btnHairPonytail"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ponytail"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btnHairCrop"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cyber Crop"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btnHairWavy"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Wavy Locks"
+                                android:textSize="11sp" />
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
+                    </HorizontalScrollView>
+
+                    <!-- Hair Color Swatches -->
+                    <LinearLayout
+                        android:id="@+id/layoutHairColorSwatches"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="14dp">
+
+                        <View
+                            android:id="@+id/swatchHairGold"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#D4AF37"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchHairBlack"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#111827"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchHairCyan"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#38BDF8"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchHairAuburn"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#B45309"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchHairSilver"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#E2E8F0" />
+                    </LinearLayout>
+
+                    <!-- 3. Eye Color -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Eye Color (PBR Iris Reflection)"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutEyeColorSwatches"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp">
+
+                        <View
+                            android:id="@+id/swatchEyeCyan"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#00D4FF"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchEyeGreen"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#10B981"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchEyePurple"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#8B5CF6"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchEyeHazel"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#F59E0B"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchEyeBlue"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#3B82F6" />
+                    </LinearLayout>
+
+                    <!-- 4. Skin Tone & Material -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Skin Tone &amp; PBR Subsurface Material"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutSkinToneSwatches"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp">
+
+                        <View
+                            android:id="@+id/swatchSkinFair"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#F5D0B5"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchSkinOlive"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#D1A179"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchSkinBronze"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#A26C48"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchSkinPorcelain"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#FAE7DB"
+                            android:layout_marginEnd="10dp" />
+
+                        <View
+                            android:id="@+id/swatchSkinDeep"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_jarvis_avatar"
+                            android:backgroundTint="#6B4226" />
+                    </LinearLayout>
+
+                    <!-- 5. Clothing Style -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Clothing Style &amp; Accessories"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        android:scrollbars="none">
+
+                        <com.google.android.material.button.MaterialButtonToggleGroup
+                            android:id="@+id/toggleClothingStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:singleSelection="true">
+
+                            <Button
+                                android:id="@+id/btnClothCyberSuit"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cyber Armor"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btnClothBlazer"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Executive Blazer"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btnClothHoodie"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Techwear Hoodie"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btnClothTunic"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sci-Fi Tunic"
+                                android:textSize="11sp" />
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
+                    </HorizontalScrollView>
+
+                    <!-- 6. Background Environment -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Avatar Environment / Background"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:scrollbars="none">
+
+                        <com.google.android.material.button.MaterialButtonToggleGroup
+                            android:id="@+id/toggleEnvironment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:singleSelection="true">
+
+                            <Button
+                                android:id="@+id/btnEnvCyberStudio"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cyber Studio"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btnEnvSunset"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Warm Sunset"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btnEnvNebula"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Deep Nebula"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btnEnvDark"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Minimal Dark"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btnEnvTransparent"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Transparent"
+                                android:textSize="11sp" />
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
+                    </HorizontalScrollView>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECTION B: AVATAR DISPLAY & PERFORMANCE -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SECTION B: AVATAR DISPLAY &amp; PERFORMANCE"
+                android:textColor="?attr/themeTextMuted"
+                android:textSize="11sp"
+                android:letterSpacing="0.08"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                app:cardBackgroundColor="?attr/themeCardBg"
+                app:strokeColor="?attr/themeCardBorder"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Display Layout Mode -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Avatar Display Layout"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:id="@+id/rgDisplayMode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="12dp">
+
+                        <RadioButton
+                            android:id="@+id/rbDisplayHomeStage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Home Stage Avatar (Interactive 3D Stage on Home Screen)"
+                            android:textColor="?attr/themeTextPrimary"
+                            android:textSize="13sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbDisplayFullScreen"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Full-Screen Immersive Avatar Mode"
+                            android:textColor="?attr/themeTextPrimary"
+                            android:textSize="13sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbDisplayFloating"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Floating Compact Companion"
+                            android:textColor="?attr/themeTextPrimary"
+                            android:textSize="13sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbDisplayOrb"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Classic Glowing Particle Orb"
+                            android:textColor="?attr/themeTextPrimary"
+                            android:textSize="13sp" />
+                    </RadioGroup>
+
+                    <!-- Graphics Quality -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Graphics Quality &amp; Mobile Optimization"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggleQuality"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        app:singleSelection="true">
+
+                        <Button
+                            android:id="@+id/btnQualityLow"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Low (Saver)"
+                            android:textSize="11sp" />
+
+                        <Button
+                            android:id="@+id/btnQualityMedium"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Medium (Balanced)"
+                            android:textSize="11sp" />
+
+                        <Button
+                            android:id="@+id/btnQualityHigh"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="High (Ultra 60FPS)"
+                            android:textSize="11sp" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <!-- Animations switch -->
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchAnimations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Enable 3D Avatar Animations"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Visual Effects switch -->
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchVfx"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Enable Visual Effects (Glow, Atmospheric Dust)"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECTION C: VOICE & EXPRESSION -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SECTION C: VOICE &amp; EXPRESSION"
+                android:textColor="?attr/themeTextMuted"
+                android:textSize="11sp"
+                android:letterSpacing="0.08"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                app:cardBackgroundColor="?attr/themeCardBg"
+                app:strokeColor="?attr/themeCardBorder"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Assistant Voice Selector -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Assistant Voice"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinnerVoice"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        android:spinnerMode="dropdown" />
+
+                    <!-- Speech Speed Slider -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Speech Rate"
+                            android:textColor="?attr/themeTextPrimary"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvSpeechSpeedValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1.0x"
+                            android:textColor="?attr/themeAccent"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/sliderSpeechSpeed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:valueFrom="0.5"
+                        android:valueTo="2.0"
+                        android:stepSize="0.1"
+                        android:value="1.0"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Lip-sync toggle -->
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchLipSync"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Real Audio-Driven Lip-Sync (Synchronized Mouth Articulation)"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="10dp" />
+
+                    <!-- Idle Animations toggle -->
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchIdleAnim"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Natural Idle Movements (Breathing, Blinking, Eye Saccades)"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECTION D: UPLOAD MY OWN AVATAR IMAGE -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SECTION D: UPLOAD CUSTOM IMAGE (2D PORTRAIT)"
+                android:textColor="?attr/themeTextMuted"
+                android:textSize="11sp"
+                android:letterSpacing="0.08"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                app:cardBackgroundColor="?attr/themeCardBg"
+                app:strokeColor="?attr/themeCardBorder"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Upload Personal Photo as Avatar Portrait"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Choose JPG, PNG, or WebP. Displayed in an interactive holographic 3D crystal frame with dynamic lighting."
+                        android:textColor="?attr/themeTextMuted"
+                        android:textSize="11.5sp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/ivCustomImageThumbnail"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:background="@drawable/bg_jarvis_icon_square"
+                            android:src="@drawable/ic_nav_chat"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="Custom Portrait Preview" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="14dp">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnPickImage"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:text="Choose from Gallery"
+                                android:textSize="12sp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnClearImage"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="6dp"
+                                android:text="Clear Photo"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECTION E: CUSTOM 3D MODEL IMPORT -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SECTION E: CUSTOM 3D MODEL IMPORT (.GLB / .GLTF)"
+                android:textColor="?attr/themeTextMuted"
+                android:textSize="11sp"
+                android:letterSpacing="0.08"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="22dp"
+                app:cardBackgroundColor="?attr/themeCardBg"
+                app:strokeColor="?attr/themeCardBorder"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Import 3D Avatar Model"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Import your own rigged 3D human model in GLB or glTF format (up to 50MB). Compatible blend shapes support facial animations and lip-sync."
+                        android:textColor="?attr/themeTextMuted"
+                        android:textSize="11.5sp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnImport3DModel"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:text="Select .GLB File"
+                            android:textSize="12sp"
+                            android:layout_marginEnd="8dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnReset3DModel"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="44dp"
+                            android:text="Reset Model"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECTION F: CUSTOM VIDEO UPLOAD & LOOP -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SECTION F: UPLOAD CUSTOM VIDEO AVATAR / LOOP"
+                android:textColor="?attr/themeTextMuted"
+                android:textSize="11sp"
+                android:letterSpacing="0.08"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                app:cardBackgroundColor="?attr/themeCardBg"
+                app:strokeColor="?attr/themeCardBorder"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Upload Personal Video (MP4 / WebM)"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Upload a video loop or animated portrait video to render as your active 3D textured avatar background or video companion."
+                        android:textColor="?attr/themeTextMuted"
+                        android:textSize="11.5sp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/tvVideoStatus"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="No video selected"
+                            android:textColor="?attr/themeTextPrimary"
+                            android:textSize="12.5sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnPickVideo"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="Choose Video"
+                            android:textSize="11.5sp"
+                            android:layout_marginEnd="6dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnClearVideo"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="Clear"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECTION G: REAL 3D ANIMATION STUDIO -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SECTION G: REAL 3D ANIMATION STUDIO"
+                android:textColor="?attr/themeTextMuted"
+                android:textSize="11sp"
+                android:letterSpacing="0.08"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="22dp"
+                app:cardBackgroundColor="?attr/themeCardBg"
+                app:strokeColor="?attr/themeCardBorder"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Real 3D Motion &amp; Choreography"
+                        android:textColor="?attr/themeTextPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trigger real-time procedural 3D skeletal motions and physics animations instantly."
+                        android:textColor="?attr/themeTextMuted"
+                        android:textSize="11.5sp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="12dp" />
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2"
+                        android:alignmentMode="alignMargins"
+                        android:columnOrderPreserved="false">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAnimDance"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="4dp"
+                            android:text="3D Dance / Groove"
+                            android:textSize="11.5sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAnimCombat"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="4dp"
+                            android:text="3D Combat Stance"
+                            android:textSize="11.5sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAnimOrbit"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="4dp"
+                            android:text="3D Hologram Spin"
+                            android:textSize="11.5sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAnimVictory"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="4dp"
+                            android:text="3D Victory Salute"
+                            android:textSize="11.5sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAnimBow"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="4dp"
+                            android:text="3D Cyber Bow"
+                            android:textSize="11.5sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAnimQuantum"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="4dp"
+                            android:text="3D Quantum Pulse"
+                            android:textSize="11.5sp" />
+                    </GridLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECTION H: AVATAR ACTION CONTROLS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSaveChanges"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="Save Avatar Changes"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:backgroundTint="?attr/themeAccent"
+                    app:cornerRadius="16dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnResetDefault"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
+                        android:layout_weight="1"
+                        android:text="Reset Defaults"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="8dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCancelChanges"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
+                        android:layout_weight="1"
+                        android:text="Cancel Changes"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
